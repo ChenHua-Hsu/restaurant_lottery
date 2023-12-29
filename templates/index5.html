@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Labels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: auto;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #333;
+            position: absolute;
+            transform-origin: center center;
+            transition: transform 3s ease-out; /* Adjust the duration and easing as needed */
+        }
+        .button-19 {
+            appearance: button;
+            background-color: #1899D6;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-family: din-round, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            outline: none;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            user-select: none;
+            -webkit-user-select: none;
+            white-space: nowrap;
+            position: relative; /* Add position relative for absolute positioning of the pseudo-element */
+        }
+
+        .button-19:after {
+            background-clip: padding-box;
+            background-color: #1CB0F6;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+            transition: background-color 0.2s; /* Add transition for background-color change */
+        }
+
+        .button-19:hover:not(:disabled):after,
+        .pressed:after {
+            background-color: #1478a0; /* Adjust the hover/pressed background color */
+        }
+
+        .button-19:main,
+        .button-19:focus {
+            user-select: auto;
+        }
+
+        .button-19:hover:not(:disabled) {
+            filter: brightness(1.1);
+            -webkit-filter: brightness(1.1);
+        }
+
+        .button-19:disabled {
+            cursor: auto;
+        }
+
+        .button-19:active {
+            border-width: 4px 0 0;
+            background: none;
+        }
+        .spoke {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            width: 2px;
+            height: 50px;
+            background-color: #333;
+        }
+        #pointer {
+            position: absolute;
+            top: 10px;
+            left: calc(50% - 5px);
+            width: 10px;
+            height: 50px;
+            background-color: red;
+            transform-origin: 50% 100%;
+            transform: rotate(0deg);
+            transition: transform 3s ease-out; /* Match the wheel transition */
+        }
+        * { /* 重置默认样式 */
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        user-select: none;
+        }
+        .wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 200px;
+        width: 200px;
+        padding: 20px;
+        margin: 20px;
+        background-color: #ff5555;
+        box-shadow: #000000 0px 0px 10px;
+        border-radius: 50%;
+    }
+        .light {
+        position: absolute;
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        top: 5px;
+        left: 115px;
+        transform-origin: 5px 115px;
+        }
+        .light-twinkling {
+        animation: 1s twinkling 3, 100ms 3s twinkling 3;
+        }
+        .light:nth-child(2n) {
+        background-color: #fafce7;
+        }
+        .light:nth-child(2n+1) {
+        background-color: #ffe58b;
+        }
+        .light:nth-child(2) {
+        transform: rotate(36deg);
+        }
+        .light:nth-child(3) {
+        transform: rotate(72deg);
+        }
+        .light:nth-child(4) {
+        transform: rotate(108deg);
+        }
+        .light:nth-child(5) {
+        transform: rotate(144deg);
+        }
+        .light:nth-child(6) {
+        transform: rotate(180deg);
+        }
+        .light:nth-child(7) {
+        transform: rotate(216deg);
+        }
+        .light:nth-child(8) {
+        transform: rotate(252deg);
+        }
+        .light:nth-child(9) {
+        transform: rotate(288deg);
+        }
+        .light:nth-child(10) {
+        transform: rotate(324deg);
+        }
+        .panel {
+        position: relative;
+        height: 200px;
+        width: 200px;
+        background-color: #b7b7b7;
+        border-radius: 100px;
+        }
+        .sector {
+        position: absolute;
+        left: 100px;
+        top: 0px;
+        width: 100px;
+        height: 200px;
+        font-size: 14px;
+        border-radius: 0px 100px 100px 0;
+        overflow: hidden;
+        transform-origin: left center;
+        }
+        .sector:nth-child(1) {
+        transform: rotate(-18deg);
+        }
+        .sector:nth-child(2) {
+        transform: rotate(18deg);
+        }
+        .sector:nth-child(3) {
+        transform: rotate(54deg);
+        }
+        .sector:nth-child(4) {
+        transform: rotate(90deg);
+        }
+        .sector:nth-child(5) {
+        transform: rotate(126deg);
+        }
+        .sector:nth-child(6) {
+        transform: rotate(162deg);
+        }
+        .sector:nth-child(7) {
+        transform: rotate(198deg);
+        }
+        .sector:nth-child(8) {
+        transform: rotate(234deg);
+        }
+        .sector:nth-child(9) {
+        transform: rotate(270deg);
+        }
+        .sector:nth-child(10) {
+        transform: rotate(306deg);
+        }
+        .sector:nth-child(2n+1) .sector-inner {
+        background: #fef6e0;
+        }
+        .sector:nth-child(2n) .sector-inner {
+        background: #ffffff;
+        }
+        .sector-inner {
+        text-align: center;
+        display: block;
+        width: 40px;
+        padding: 5px 3px 0 57px;
+        height: 195px;
+        transform: translateX(-100px) rotate(36deg);
+        transform-origin: right center;
+        border-radius: 100px 0 0 100px;
+        }
+        .sector-inner span {
+        display: block;
+        transform-origin: center;
+        transform: rotate(-19deg);
+        color: #d46854;
+        }
+        .pointer {
+        position: absolute;
+        left: 79px;
+        top: 79px;
+        z-index: 10;
+        height: 30px;
+        width: 30px;
+        padding: 6px;
+        color: #fff899;
+        line-height: 15px;
+        font-size: 12px;
+        text-align: center;
+        background-color: #ff5350;
+        border-radius: 50%;
+        border: 1px solid #ff5350;
+        transition: transform 3s cubic-bezier(.2,.93,.43,1);
+        }
+        .pointer::after {
+        content: '';
+        position: absolute;
+        left: 14px;
+        top: -24px;
+        border-width: 12px 6px;
+        border-style: solid;
+        border-color: transparent;
+        border-bottom-color: #ff5350;
+        transform-origin: center;
+        }
+        .result {
+        margin: 20px 60px;
+        }
+
+        @keyframes twinkling {
+        50% { background: transparent; }
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ccc; /* 添加边框样式 */
+            border-radius: 4px; /* 可以根据需要调整圆角 */
+            font-size: 16px;
+            width: 60px; /* 调整输入框的宽度 */
+        }
+    </style>
+</head>
+<body>
+    <!-- <div>
+        <label for="location">地點：</label>
+        <input type="text" id="location" name="location" placeholder="請輸入地點">
+    </div>
+    <div>
+        <label for="price">價格：</label>
+        <input type="text" id="price" name="price" placeholder="請輸入價格">
+    </div>
+    <div>
+        <label for="category">類型：</label>
+        <input type="text" id="category" name="category" placeholder="請輸入類型">
+    </div>
+    <div>
+        <label for="quantity">數量：</label>
+        <input type="number" id="quantity" name="quantity" placeholder="請輸入數量">
+    </div>
+    <button onclick="getRestaurants()">選擇餐廳</button> -->
+
+    <!-- <div id="result"></div> -->
+    <div class="button-container">
+        <label id="label1" class="button-19" onclick="togglePressed('label1', '沒有想法')">沒有想法</label>
+        <label id="label2" class="button-19" onclick="togglePressed('label2', '118')">118</label>
+        <label id="label3" class="button-19" onclick="togglePressed('label3', '新生南路')">新生南路</label>
+        <label id="label4" class="button-19" onclick="togglePressed('label4', '公館')">公館</label>
+        <label id="label5" class="button-19" onclick="togglePressed('label5', '其他')">其他</label>
+    </div>
+
+    <div id="output"></div>
+    
+    <br>
+    <div class="input-container">
+        <label for="restaurantCount">請輸入你想選擇的餐廳數：</label>
+        <input type="number" id="restaurantCount" name="restaurantCount" min="1" max="10">
+        <label class="button-19" onclick="selectRestaurants()">確定</label>
+        
+    </div>
+    <script>
+        var selectedLocations = [];
+
+        function togglePressed(location) {
+            var index = selectedLocations.indexOf(location);
+            if (index === -1) {
+                selectedLocations.push(location);
+            } else {
+                selectedLocations.splice(index, 1);
+            }
+        }
+
+        function selectRestaurants() {
+            var countInput = document.getElementById("restaurantCount");
+            var count = parseInt(countInput.value, 10);
+
+            // Perform validation if needed
+            if (isNaN(count) || count < 1 || count > 10) {
+                alert("請輸入有效的數字（1 到 10 之間）");
+                return;
+            }
+
+            // Call the function to show the selected wheel based on user input
+            // Add more conditions if needed
+        } 
+        function togglePressed(labelId, text) {
+            var label = document.getElementById(labelId);
+            label.classList.toggle('pressed');
+            if (outputDiv.innerHTML.includes(text)) {
+                // If text is already in output, remove it
+                outputDiv.innerHTML = outputDiv.innerHTML.replace(text + ",", "");
+            } else {
+                // If text is not in output, add it
+                outputDiv.innerHTML += text + ",";
+            }
+            return outputDiv.innerHTML;
+        }
+
+        function selectRestaurants() {
+            var countInput = document.getElementById("restaurantCount");
+            var count = parseInt(countInput.value, 10);
+
+            // Perform validation if needed
+            if (isNaN(count) || count < 1 || count > 10) {
+                alert("請輸入有效的數字（1 到 10 之間）");
+                return;
+            }
+
+            // Call the function to show the selected restaurants based on user input
+            getRestaurants(count);
+        }
+
+        function getRestaurants(count) {
+            // Get the selected locations from pressed buttons
+            var selectedLocations = [];
+            var labels = document.getElementsByClassName("button-19");
+            for (var i = 0; i < labels.length; i++) {
+                if (labels[i].classList.contains('pressed')) {
+                    selectedLocations.push(labels[i].textContent.trim());
+                }
+            }
+
+            // Fetch data from the backend
+            fetch('/api/restaurants', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'location': selectedLocations.join(','), // Join selected locations with commas
+                        'price': '沒有想法', // You may need to handle price and category based on your requirements
+                        'category': '沒有想法',
+                        'n': count
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var resultDiv = document.getElementById('output');
+                    resultDiv.innerHTML = '<p>推薦的餐廳：</p>';
+                    data.restaurants.forEach(function(restaurant) {
+                        resultDiv.innerHTML += '<p>' + restaurant + '</p>';
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+        function getRestaurants() {
+            var location = togglePressed(labelId, text)//document.getElementById('location').value;
+            var price = document.getElementById('price').value;
+            var category = document.getElementById('category').value;
+            var quantity = document.getElementById('quantity').value;
+
+            fetch('/api/restaurants', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'location': location,
+                    'price': price,
+                    'category': category,
+                    'n': quantity
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = '<p>推薦的餐廳：</p>';
+                data.restaurants.forEach(function(restaurant) {
+                    resultDiv.innerHTML += '<p>' + restaurant + '</p>';
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+    </script>
+</body>
+</html>
