@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Labels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: auto;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #333;
+            position: absolute;
+            transform-origin: center center;
+            transition: transform 3s ease-out; /* Adjust the duration and easing as needed */
+        }
+        .button-19 {
+            appearance: button;
+            background-color: #1899D6;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-family: din-round, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .8px;
+            line-height: 20px;
+            outline: none;
+            overflow: visible;
+            padding: 13px 16px;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transform: translateZ(0);
+            transition: filter .2s;
+            user-select: none;
+            -webkit-user-select: none;
+            white-space: nowrap;
+            position: relative; /* Add position relative for absolute positioning of the pseudo-element */
+        }
+
+        .button-19:after {
+            background-clip: padding-box;
+            background-color: #1CB0F6;
+            border: solid transparent;
+            border-radius: 16px;
+            border-width: 0 0 4px;
+            bottom: -4px;
+            content: "";
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+            transition: background-color 0.2s; /* Add transition for background-color change */
+        }
+
+        .button-19:hover:not(:disabled):after,
+        .pressed:after {
+            background-color: #1478a0; /* Adjust the hover/pressed background color */
+        }
+
+        .button-19:main,
+        .button-19:focus {
+            user-select: auto;
+        }
+
+        .button-19:hover:not(:disabled) {
+            filter: brightness(1.1);
+            -webkit-filter: brightness(1.1);
+        }
+
+        .button-19:disabled {
+            cursor: auto;
+        }
+
+        .button-19:active {
+            border-width: 4px 0 0;
+            background: none;
+        }
+        .spoke {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            width: 2px;
+            height: 50px;
+            background-color: #333;
+        }
+        #pointer {
+            position: absolute;
+            top: 10px;
+            left: calc(50% - 5px);
+            width: 10px;
+            height: 50px;
+            background-color: red;
+            transform-origin: 50% 100%;
+            transform: rotate(0deg);
+            transition: transform 3s ease-out; /* Match the wheel transition */
+        }
+        * { /* 重置默认样式 */
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        user-select: none;
+        }
+        .wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 200px;
+        width: 200px;
+        padding: 20px;
+        margin: 20px;
+        background-color: #ff5555;
+        box-shadow: #000000 0px 0px 10px;
+        border-radius: 50%;
+    }
+        .light {
+        position: absolute;
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        top: 5px;
+        left: 115px;
+        transform-origin: 5px 115px;
+        }
+        .light-twinkling {
+        animation: 1s twinkling 3, 100ms 3s twinkling 3;
+        }
+        .light:nth-child(2n) {
+        background-color: #fafce7;
+        }
+        .light:nth-child(2n+1) {
+        background-color: #ffe58b;
+        }
+        .light:nth-child(2) {
+        transform: rotate(36deg);
+        }
+        .light:nth-child(3) {
+        transform: rotate(72deg);
+        }
+        .light:nth-child(4) {
+        transform: rotate(108deg);
+        }
+        .light:nth-child(5) {
+        transform: rotate(144deg);
+        }
+        .light:nth-child(6) {
+        transform: rotate(180deg);
+        }
+        .light:nth-child(7) {
+        transform: rotate(216deg);
+        }
+        .light:nth-child(8) {
+        transform: rotate(252deg);
+        }
+        .light:nth-child(9) {
+        transform: rotate(288deg);
+        }
+        .light:nth-child(10) {
+        transform: rotate(324deg);
+        }
+        .panel {
+        position: relative;
+        height: 200px;
+        width: 200px;
+        background-color: #b7b7b7;
+        border-radius: 100px;
+        }
+        .sector {
+        position: absolute;
+        left: 100px;
+        top: 0px;
+        width: 100px;
+        height: 200px;
+        font-size: 14px;
+        border-radius: 0px 100px 100px 0;
+        overflow: hidden;
+        transform-origin: left center;
+        }
+        .sector:nth-child(1) {
+        transform: rotate(-18deg);
+        }
+        .sector:nth-child(2) {
+        transform: rotate(18deg);
+        }
+        .sector:nth-child(3) {
+        transform: rotate(54deg);
+        }
+        .sector:nth-child(4) {
+        transform: rotate(90deg);
+        }
+        .sector:nth-child(5) {
+        transform: rotate(126deg);
+        }
+        .sector:nth-child(6) {
+        transform: rotate(162deg);
+        }
+        .sector:nth-child(7) {
+        transform: rotate(198deg);
+        }
+        .sector:nth-child(8) {
+        transform: rotate(234deg);
+        }
+        .sector:nth-child(9) {
+        transform: rotate(270deg);
+        }
+        .sector:nth-child(10) {
+        transform: rotate(306deg);
+        }
+        .sector:nth-child(2n+1) .sector-inner {
+        background: #fef6e0;
+        }
+        .sector:nth-child(2n) .sector-inner {
+        background: #ffffff;
+        }
+        .sector-inner {
+        text-align: center;
+        display: block;
+        width: 40px;
+        padding: 5px 3px 0 57px;
+        height: 195px;
+        transform: translateX(-100px) rotate(36deg);
+        transform-origin: right center;
+        border-radius: 100px 0 0 100px;
+        }
+        .sector-inner span {
+        display: block;
+        transform-origin: center;
+        transform: rotate(-19deg);
+        color: #d46854;
+        }
+        .pointer {
+        position: absolute;
+        left: 79px;
+        top: 79px;
+        z-index: 10;
+        height: 30px;
+        width: 30px;
+        padding: 6px;
+        color: #fff899;
+        line-height: 15px;
+        font-size: 12px;
+        text-align: center;
+        background-color: #ff5350;
+        border-radius: 50%;
+        border: 1px solid #ff5350;
+        transition: transform 3s cubic-bezier(.2,.93,.43,1);
+        }
+        .pointer::after {
+        content: '';
+        position: absolute;
+        left: 14px;
+        top: -24px;
+        border-width: 12px 6px;
+        border-style: solid;
+        border-color: transparent;
+        border-bottom-color: #ff5350;
+        transform-origin: center;
+        }
+        .result {
+        margin: 20px 60px;
+        }
+
+        @keyframes twinkling {
+        50% { background: transparent; }
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ccc; /* 添加边框样式 */
+            border-radius: 4px; /* 可以根据需要调整圆角 */
+            font-size: 16px;
+            width: 60px; /* 调整输入框的宽度 */
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        img {
+            max-width: 20%;
+            height: auto;
+        }
+        
+        button {
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+    </style>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+     Include shake.js (replace 'path/to/shake.js' with the correct path) 
+    <script src="shake.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+</head>
+<body>
+    <div class="button-container">
+        <label id = "label1" class="button-19" onclick="toggleLocation('label1', '118', '118')">118</label>
+        <label id = "label2" class="button-19" onclick="toggleLocation('label2', '新生南路', '新生南路')">新生南路</label>
+        <label id = "label3" class="button-19" onclick="toggleLocation('label3', '公館', '公館')">公館</label>
+        <label id = "label4" class="button-19" onclick="toggleLocation('label4', '其他', '其他')">其他</label>
+        <label id = "label5" class="button-19" onclick="toggleLocation('label5', '沒有想法', '沒有想法')">沒有想法</label>
+    </div>
+
+    <br>
+    <div class="button-container">
+        <label id = "label6" class="button-19 price-button" onclick="togglePrice('label6', '貴')">貴</label>
+        <label id = "label7" class="button-19 price-button" onclick="togglePrice('label7', '普通')">普通</label>
+        <label id = "label8" class="button-19 price-button" onclick="togglePrice('label8', '便宜')">便宜</label>
+        <label id = "label9" class="button-19 price-button" onclick="togglePrice('label9', '沒有想法')">沒有想法</label>
+
+    </div>
+    <br>
+    <div class="button-container">
+        <label id = "label10" class="button-19" onclick="toggleCategory('label10', '貴')">貴</label>
+        <label id = "label11" class="button-19" onclick="toggleCategory('label11', '普通')">普通</label>
+        <label id = "label12" class="button-19" onclick="toggleCategory('label12', '便宜')">便宜</label>
+        <label id = "label13" class="button-19" onclick="toggleCategory('label13', '貴')">貴</label>
+        <label id = "label14" class="button-19" onclick="toggleCategory('label14', '普通')">普通</label>
+        <label id = "label15" class="button-19" onclick="toggleCategory('label15', '沒有想法')">沒有想法</label>
+         
+    </div>
+
+
+
+    <div id="output"></div>
+    <!-- <div id="selectedLocationsDisplay"></div> -->
+    <br>
+    <!-- <div class="button-container">
+        <button class="button-19" onclick="setLocation('118')">118</button>
+        <button class="button-19" onclick="setLocation('新生南路')">新生南路</button>
+        <button class="button-19" onclick="setLocation('公館')">公館</button>
+    </div> -->
+    
+    <!-- Add input fields for other parameters (price, category, quantity) -->
+    <div class="input-container">
+        <!-- <label for="price">價格：</label>
+        <input type="text" id="price" name="price">
+    
+        <label for="category">類型：</label>
+        <input type="text" id="category" name="category"> -->
+    
+        <label for="quantity">數量：</label>
+        <input type="number" id="quantity" name="quantity" min="1" max="10">
+    </div>
+
+    <br>
+    
+    <button class = "button-19" onclick="getRestaurants()">確定</button>
+
+    <br>
+    
+    <div id="result"></div>
+
+    <div class="container">
+        <img src="{{ url_for('static', filename='ok.png') }}" alt="Image" id="image">
+        <!-- <button onclick="toggleImage()">Toggle</button> -->
+    </div>
+
+    <script>
+        
+        var selectedLocations = []; // Default value
+        // var selectedLocationsDisplay = document.getElementById("selectedLocationsDisplay");
+
+        function toggleLocation(labelId,location,text) {
+            var label = document.getElementById(labelId);
+            label.classList.toggle('pressed');
+            // var outputDiv = document.getElementById("output");
+            // if (outputDiv.innerHTML.includes(text)) {
+            //     // If text is already in output, remove it
+            //     outputDiv.innerHTML = outputDiv.innerHTML.replace(text + "<br>", "");
+            // } else {
+            //     // If text is not in output, add it
+            //     outputDiv.innerHTML += text + "<br>";
+            // }
+            var index = selectedLocations.indexOf(location);
+            if (index === -1) {
+                // Location not selected, add it
+                selectedLocations.push(location);
+            } else {
+                // Location already selected, remove it
+                selectedLocations.splice(index, 1);
+            }
+            // selectedLocationsDisplay.textContent = "Selected Locations: " + selectedLocations.join(", ");
+        
+        }
+        var selectedPrice = [];
+        function togglePrice(labelId, price) {
+            var label = document.getElementById(labelId);
+
+            // Clear pressed class from all price buttons
+            var priceButtons = document.querySelectorAll('.price-button');
+            priceButtons.forEach(function(button) {
+                button.classList.remove('pressed');
+            });
+
+            // Toggle pressed class for the selected price button
+            label.classList.add('pressed');
+
+            // Set selectedPrice
+            selectedPrice = price;
+        }
+        var selectedCategory = [];
+        function toggleCategory(labelId,category) {
+            var label = document.getElementById(labelId);
+            label.classList.toggle('pressed');
+            var outputDiv = document.getElementById("output");
+            // if (outputDiv.innerHTML.includes(text)) {
+            //     // If text is already in output, remove it
+            //     outputDiv.innerHTML = outputDiv.innerHTML.replace(text + "<br>", "");
+            // } else {
+            //     // If text is not in output, add it
+            //     outputDiv.innerHTML += text + "<br>";
+            // }
+            var index = selectedCategory.indexOf(category);
+            if (index === -1) {
+                // Location not selected, add it
+                selectedCategory.push(category);
+            } else {
+                // Location already selected, remove it
+                selectedCategory.splice(index, 1);
+            }
+            // var outputDiv = document.getElementById("output");
+            // if (outputDiv.innerHTML.includes(text)) {
+            //     // If text is already in output, remove it
+            //     outputDiv.innerHTML = outputDiv.innerHTML.replace(text + "<br>", "");
+            // } else {
+            //     // If text is not in output, add it
+            //     outputDiv.innerHTML += text + "<br>";
+            // }
+            // var index = selectedPrice.indexOf(price);
+            // if (index === -1) {
+            //     // Location not selected, add it
+            //     selectedPrice.push(price);
+            // } else {
+            //     // Location already selected, remove it
+            //     selectedPrice.splice(index, 1);
+            // }
+            // selectedLocationsDisplay.textContent = "Selected Locations: " + selectedLocations.join(", ");
+            // selectedCategory = [category]
+        }
+
+        //function getRestaurants() {
+            // var price = document.getElementById('price').value;
+            // var category = document.getElementById('category').value;
+            // const image = document.getElementById('image');
+
+            // // Save the current image source
+            // const currentSrc = image.src;
+
+            // // Change the image source
+            // image.src = isImage ? "{{ url_for('static', filename='shake.gif') }}" : "{{ url_for('static', filename='ok.png') }}";
+
+            // // Schedule a timeout to revert the image source after 3 seconds
+            // setTimeout(function() {
+            //     image.src = currentSrc; // Revert to the original source
+            //     isImage = !isImage; // Toggle isImage for the next click
+            // }, 3000);
+            // var quantity = document.getElementById('quantity').value;
+
+            // fetch('/api/restaurants', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/x-www-form-urlencoded',
+            //     },
+            //     body: new URLSearchParams({
+            //         'location': selectedLocations,
+            //         'price': selectedPrice,
+            //         'category': selectedCategory,
+            //         'n': quantity
+            //     }),
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     var resultDiv = document.getElementById('result');
+            //     resultDiv.innerHTML = '<p>推薦的餐廳：</p>';
+            //     data.restaurants.forEach(function(restaurant) {
+            //         resultDiv.innerHTML += '<p>' + restaurant + '</p>';
+            //     });
+            // })
+            // .catch(error => console.error('Error fetching data:', error));
+        //     const image = document.getElementById('image');
+
+        // // Save the current image source
+        // const currentSrc = image.src;
+
+        // // Change the image source
+        // image.src = isImage ? "{{ url_for('static', filename='shake.gif') }}" : "{{ url_for('static', filename='ok.png') }}";
+
+        // // Schedule a timeout to revert the image source after 3 seconds
+        // setTimeout(function() {
+        //     image.src = currentSrc; // Revert to the original source
+        //     isImage = !isImage; // Toggle isImage for the next click
+
+        //     // Fetch and display restaurant recommendations
+        //     var quantity = document.getElementById('quantity').value;
+
+        //     fetch('/api/restaurants', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded',
+        //         },
+        //         body: new URLSearchParams({
+        //             'location': selectedLocations,
+        //             'price': selectedPrice,
+        //             'category': selectedCategory,
+        //             'n': quantity
+        //         }),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         var resultDiv = document.getElementById('result');
+        //         resultDiv.innerHTML = '<p>推薦的餐廳：</p>';
+        //         data.restaurants.forEach(function(restaurant) {
+        //             resultDiv.innerHTML += '<p>' + restaurant + '</p>';
+        //         });
+        //     })
+        //     .catch(error => console.error('Error fetching data:', error));
+        // }, 3000);
+            // const image = document.getElementById('image');
+            // const resultDiv = document.getElementById('result');
+
+            // // Save the current image source
+            // const currentSrc = image.src;
+
+            // // Change the image source
+            // image.src = isImage ? "{{ url_for('static', filename='shake.gif') }}" : "{{ url_for('static', filename='ok.png') }}";
+
+            // // Schedule a timeout to revert the image source after 3 seconds
+            // setTimeout(function() {
+            //     image.src = currentSrc; // Revert to the original source
+            //     isImage = !isImage; // Toggle isImage for the next click
+
+            //     // Fetch and display restaurant recommendations
+            //     var quantity = document.getElementById('quantity').value;
+
+            //     fetch('/api/restaurants', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/x-www-form-urlencoded',
+            //         },
+            //         body: new URLSearchParams({
+            //             'location': selectedLocations,
+            //             'price': selectedPrice,
+            //             'category': selectedCategory,
+            //             'n': quantity
+            //         }),
+            //     })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         // Clear previous content
+            //         resultDiv.innerHTML = '';
+
+            //         // Append image div
+            //         const imageDiv = document.createElement('div');
+            //         imageDiv.innerHTML = '<img src="' + image.src + '" alt="Restaurant Image">';
+            //         resultDiv.appendChild(imageDiv);
+
+            //         // Append text div
+            //         const textDiv = document.createElement('div');
+            //         textDiv.innerHTML = '<p>推薦的餐廳：</p>';
+            //         data.restaurants.forEach(function(restaurant) {
+            //             textDiv.innerHTML += '<p>' + restaurant + '</p>';
+            //         });
+            //         resultDiv.appendChild(textDiv);
+            //     })
+            //     .catch(error => console.error('Error fetching data:', error));
+            // }, 3000);
+        //     const image = document.getElementById('image');
+        //     const resultDiv = document.getElementById('result');
+
+        //     // Save the current image source
+        //     const currentSrc = image.src;
+
+        //     // Change the image source to the loading image
+        //     image.src = "{{ url_for('static', filename='shake.gif') }}";
+
+        //     // Fetch and display restaurant recommendations
+        //     var quantity = document.getElementById('quantity').value;
+
+        //     fetch('/api/restaurants', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded',
+        //         },
+        //         body: new URLSearchParams({
+        //             'location': selectedLocations,
+        //             'price': selectedPrice,
+        //             'category': selectedCategory,
+        //             'n': quantity
+        //         }),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // Clear previous content
+        //         resultDiv.innerHTML = '';
+
+        //         // Append text div
+        //         const textDiv = document.createElement('div');
+        //         textDiv.innerHTML = '<p>推薦的餐廳：</p>';
+        //         data.restaurants.forEach(function(restaurant) {
+        //             textDiv.innerHTML += '<p>' + restaurant + '</p>';
+        //         });
+        //         resultDiv.appendChild(textDiv);
+
+        //         // Revert the image source after a short delay (e.g., 1 second)
+        //         setTimeout(function() {
+        //             image.src = currentSrc; // Revert to the original source
+        //         }, 1000);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error fetching data:', error);
+        //         // If there's an error, revert the image source immediately
+        //         image.src = currentSrc;
+        //     });
+        // }
+        // var staticImageURLs = {
+        //     ok: "{{ url_for('static', filename='ok.png') }}",
+        //     shake: "{{ url_for('static', filename='shake.gif') }}"
+        // };
+
+        // var isImage = true;
+
+        // function toggleImage() {
+        //     const image = document.getElementById('image');
+
+        //     // Save the current image source
+        //     const currentSrc = image.src;
+
+        //     // Change the image source
+        //     image.src = isImage ? "{{ url_for('static', filename='shake.gif') }}" : "{{ url_for('static', filename='ok.png') }}";
+
+        //     // Schedule a timeout to revert the image source after 3 seconds
+        //     setTimeout(function() {
+        //         image   .src = currentSrc; // Revert to the original source
+        //         isImage = !isImage; // Toggle isImage for the next click
+        //     }, 3000);
+        // }
+//         function getRestaurants() {
+//             const image = document.getElementById('image');
+//             const resultDiv = document.getElementById('result');
+
+//             // Save the current image source
+//             const currentSrc = image.src;
+
+//             // Change the image source to the loading image
+//             image.src = "{{ url_for('static', filename='shake.gif') }}";
+
+//             // Create a promise that resolves when the image has loaded
+//             setTimeout(function() {
+//                 image.src = currentSrc;
+//             const imageLoadedPromise = new Promise((resolve) => {
+//                 image.onload = resolve;
+//             });
+
+//             // Fetch and display restaurant recommendations after the image has loaded
+//             imageLoadedPromise.then(() => {
+//                 var quantity = document.getElementById('quantity').value;
+
+//                 fetch('/api/restaurants', {
+//                     method: 'POST',
+//                     headers: {
+//                         'Content-Type': 'application/x-www-form-urlencoded',
+//                     },
+//                     body: new URLSearchParams({
+//                         'location': selectedLocations,
+//                         'price': selectedPrice,
+//                         'category': selectedCategory,
+//                         'n': quantity
+//                     }),
+//                 })
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     // Clear previous content
+//                     resultDiv.innerHTML = '';
+
+//                     // Append text div
+//                     const textDiv = document.createElement('div');
+//                     textDiv.innerHTML = '<p>推薦的餐廳：</p>';
+//                     data.restaurants.forEach(function(restaurant) {
+//                         textDiv.innerHTML += '<p>' + restaurant + '</p>';
+//                     });
+//                     resultDiv.appendChild(textDiv);
+
+//                     // Revert the image source after a short delay (e.g., 1 second)
+                    
+//                          // Revert to the original source
+                    
+//                 })
+//                 .catch(error => {
+//                     console.error('Error fetching data:', error);
+//                     // If there's an error, revert the image source immediately
+//                     image.src = currentSrc;
+//                 });
+//             });
+//         }, 3000);
+// }
+        function getRestaurants() {
+            const image = document.getElementById('image');
+            const resultDiv = document.getElementById('result');
+
+            // Save the current image source
+            const currentSrc = image.src;
+
+            // Change the image source to the loading image
+            image.src = "{{ url_for('static', filename='shake.gif') }}";
+
+            // Create a promise that resolves when the image has loaded
+            const imageLoadedPromise = new Promise((resolve) => {
+                image.onload = resolve;
+            });
+
+            // Fetch and display restaurant recommendations after the image has loaded
+            setTimeout(function() {
+                image.src = currentSrc;
+
+                imageLoadedPromise.then(() => {
+                    var quantity = document.getElementById('quantity').value;
+
+                    fetch('/api/restaurants', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            'location': selectedLocations,
+                            'price': selectedPrice,
+                            'category': selectedCategory,
+                            'n': quantity
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear previous content
+                        resultDiv.innerHTML = '';
+
+                        // Append image div
+                        const imageDiv = document.createElement('div');
+                        imageDiv.innerHTML = '<img src="' + image.src + '" alt="Restaurant Image">';
+                        //resultDiv.appendChild(imageDiv);
+
+                        // Append text div
+                        const textDiv = document.createElement('div');
+                        textDiv.innerHTML = '<p>推薦的餐廳：</p>';
+                        data.restaurants.forEach(function(restaurant) {
+                            textDiv.innerHTML += '<p>' + restaurant + '</p>';
+                        });
+                        resultDiv.appendChild(textDiv);
+
+                        // Revert the image source after a short delay (e.g., 1 second)
+                        // setTimeout(function() {
+                        //     // Revert to the original source
+                        //     image.src = currentSrc;
+                        // }, 1000);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        // If there's an error, revert the image source immediately
+                        image.src = currentSrc;
+                    });
+                });
+            }, 3000);
+        }
+
+    </script>
+    <!-- <img src="ok.png" class="js-img-ok" />
+    <img src="shake.gif" class="js-img-shake" />
+    <h1 class="js-result">抽籤抽獎神器</h1>
+    <textarea class="js-textarea"></textarea>
+    <button class="js-start">開抽！</button> -->
+    
+    <!-- <script>
+        $('.js-img-shake').hide();
+
+        $('.js-start').on('click', function () {
+            var options = $('.js-textarea').val().split('\n');
+            var rand = Math.floor(Math.random()*options.length);
+
+            $('.js-img-shake').show();
+            $('.js-img-ok').hide();
+            $('.js-result').text('等待開將結果...');
+            setTimeout(function() {
+                $('.js-img-shake').hide();
+                $('.js-img-ok').show();
+                $('.js-result').text('開獎結果：' + options[rand]);
+            }, 3000);
+        });
+    </script> -->
+    
+    
+    <!-- <script>
+        // let isImage = False;
+
+        function toggleImage() {
+            const image = document.getElementById('image');
+
+            // Save the current image source
+            const currentSrc = image.src;
+
+            // Change the image source
+            image.src = isImage ? "{{ url_for('static', filename='shake.gif') }}" : "{{ url_for('static', filename='ok.png') }}";
+
+            // Schedule a timeout to revert the image source after 3 seconds
+            setTimeout(function() {
+                image.src = currentSrc; // Revert to the original source
+                isImage = !isImage; // Toggle isImage for the next click
+            }, 3000);
+        }
+    </script> -->
+    
+</body>
+</html>
